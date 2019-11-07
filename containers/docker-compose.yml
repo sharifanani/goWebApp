@@ -1,0 +1,23 @@
+version: "3.6"
+services:
+  postgres_server:
+    image: postgres:12.0
+    environment:
+      POSTGRES_USER: anani
+      POSTGRES_PASSWORD: mypassword
+      POSTGRES_DB: lims
+    volumes:
+      - ./pg_data:/var/lib/postgresql/data
+    ports:
+      - 5050:5432
+    expose:
+      - 5432
+  pgadmin_server:
+    image: dpage/pgadmin4:latest
+    environment:
+      PGADMIN_DEFAULT_PASSWORD: mypassword
+      PGADMIN_DEFAULT_EMAIL: example@example.com
+    ports:
+      - 5051:80
+    volumes:
+      - ./pgadmin:/var/lib/pgadmin
