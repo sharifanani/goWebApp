@@ -2,10 +2,9 @@ package Pages
 
 import (
 	"encoding/json"
-	"fmt"
-	"goWebApp/database/queries"
-	"goWebApp/database/responses"
-	"goWebApp/database/tables"
+	"github.com/sharifanani/goWebApp/database/models"
+	"github.com/sharifanani/goWebApp/database/queries"
+	"github.com/sharifanani/goWebApp/database/responses"
 	"io/ioutil"
 	"net/http"
 	"strings"
@@ -18,9 +17,12 @@ func closeRequest(r *http.Request) {
 func AddUser(w http.ResponseWriter, r *http.Request) {
 	body, _ := ioutil.ReadAll(r.Body)
 	defer closeRequest(r)
-	var myUser tables.User
+	var myUser models.User
 	_ = json.Unmarshal(body, &myUser)
-	rows, err := queries.AddUser(&myUser)
+	if len(myUser.Password) < 6 {
+		w.WriteHeader(http.StatusConflict)
+	}
+	_, err := queries.AddUser(&myUser)
 	if err != nil {
 		if strings.Contains(err.Error(), "duplicate") {
 			w.WriteHeader(http.StatusConflict)
@@ -31,7 +33,9 @@ func AddUser(w http.ResponseWriter, r *http.Request) {
 			_, _ = w.Write([]byte(err.Error()))
 		}
 	}
-	fmt.Println(rows)
-	fmt.Println(err)
-	fmt.Println(myUser)
+}
+
+func ResetUserTable(w http.ResponseWriter, r *http.Request) {
+	_, _ = w, r
+	queries.ResetUserTable()
 }
