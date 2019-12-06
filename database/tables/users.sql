@@ -1,5 +1,4 @@
 DROP TABLE IF EXISTS public.users;
-
 CREATE TABLE public.users
 (
     id serial PRIMARY KEY ,
@@ -11,7 +10,6 @@ CREATE TABLE public.users
     CONSTRAINT unique_username UNIQUE (username)
 
 );
-
 ALTER TABLE public.users
     OWNER to anani;
 

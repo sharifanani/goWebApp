@@ -1,7 +1,7 @@
 package main
 
 import (
-	"goWebApp/Pages"
+	"github.com/sharifanani/goWebApp/Pages"
 	"log"
 	"net/http"
 )
